@@ -24,22 +24,24 @@ def decrypt(db_hash, password):
 
 
 def encrypt2(user, master, password):
+    base = "gAAAAABjKQ"
     key = hashlib.pbkdf2_hmac(
         "sha256", master.encode(), user.encode(), iterations=10
     )
     key = base64.urlsafe_b64encode(key)
     fernet = Fernet(key)
-    db_ready = fernet.encrypt(password.encode()).decode()
+    db_ready = fernet.encrypt(password.encode()).decode().strip(base)
     return db_ready
 
 
 def decrypt2(user, master, password):
+    base = "gAAAAABjKQ"
     key = hashlib.pbkdf2_hmac(
         "sha256", master.encode(), user.encode(), iterations=10
     )
     key = base64.urlsafe_b64encode(key)
     fernet = Fernet(key)
-    decrypted = fernet.decrypt(password.encode()).decode()
+    decrypted = fernet.decrypt(base+password.encode()).decode()
     return decrypted
 
 

@@ -1,9 +1,10 @@
 from pathlib import Path
 
-from dotenv import dotenv_values
+from dotenv import load_dotenv
 from rich.console import Console
 from rich.prompt import Prompt
 from rich.rule import Rule
+import os
 
 from mankey.utils.crypto import decrypt, encrypt
 
@@ -16,6 +17,7 @@ def check_registration() -> None:
     if not archive.exists():
         register(archive)
     else:
+        load_dotenv(archive)
         login()
 
 
@@ -49,10 +51,11 @@ def login() -> None:
             password=True,
         )
         if decrypt(master_encrypted(), password):
+            os.environ["pwd_mankey"] = password
             break
 
         console.print("[prompt.invalid]wrong password")
 
 
 def master_encrypted() -> str:
-    return dotenv_values(archive)["MASTER"]
+    return os.getenv("MASTER")

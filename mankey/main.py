@@ -1,5 +1,5 @@
 from mankey.data import check_registration
-from mankey.menu import index_menu, new_pwd
+from mankey.menu import index_menu, new_pwd, search_pwd_menu
 
 
 def main():
@@ -10,6 +10,8 @@ def main():
 
         if choice == -1:
             break
+        elif choice == 0:
+            search_pwd_menu()
         elif choice == 1:
             new_pwd()
 
